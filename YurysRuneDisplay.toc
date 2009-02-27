@@ -1,0 +1,7 @@
+## Interface: 30000
+## Title: Yury's RuneDisplay
+## Notes: Very simple and lightweight addon for display of a Death Knight's runes (because default frame just doesn't do well)
+## Author: Yury (EU-Turalyon)
+## Version: 1.4
+## SavedVariablesPerCharacter: YRDSettings
+YurysRuneDisplay.xml

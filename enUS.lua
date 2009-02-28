@@ -1,1 +1,2 @@
---@localization(locale="enUS", format="lua_table")@
+L = {}
+--@localization(locale="enUS", format="lua_additive_table")@

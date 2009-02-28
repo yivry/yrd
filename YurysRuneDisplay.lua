@@ -4,23 +4,6 @@ local YRDDetails = {
 	Last_Change = " @project-date-iso@"
 }
 
-local Errors = {
-	NO_DEATHKNIGHT = "Not a Death Knight, Yury's RuneDisplay disabled",
-	WRONG_SCALE = "Scale not in range 0.1 - 3.5",
-	NO_SCALE = "No scale given",
-	WRONG_OOCA = "Alpha not in range 0 - 1",
-	NO_OOCA = "No alpha given",
-	WRONG_OPTION = "Unknown option",
-	NO_CD_OPTION = "No numcd option given",
-	WRONG_CD_OPTION = "numcd option must be either 'on' or 'off'",
-	NO_BLIZ_OPTION = "No bliz option given",
-	WRONG_BLIZ_OPTION = "bliz option must be either 'on' or 'off'",
-	NO_CDCLR_OPTION = "No cdclr option given",
-	WRONG_CDCLR_OPTION = "cdclr option must be either 'default' or 'rune'",
-	NO_ARC_OPTION = "No arc option given",
-	WRONG_ARC_OPTION = "arc option must be 'happy', 'sad' or 'straight'"
-}
-
 local Arcs = {
 	happy =    {0, -8, -4, 0,  4,  8},
 	straight = {0,  0,  0, 0,  0,  0},
@@ -154,7 +137,7 @@ function YRD_SlashCmd(arg)
 end
 
 function YRD_Error(err, hide_usage)
-	YRD_PrintMessage(eclr("Error")..nclr(": "..Errors[err]))
+	YRD_PrintMessage(eclr(L["Error"])..nclr(": "..L[err]))
 	if (not hide_usage) then
 		YRD_ShowUsage()
 	end
@@ -162,24 +145,24 @@ end
 
 function YRD_ShowHelp()
 	YRD_ShowUsage()
-	YRD_PrintMessage(hclr(" scale #")..nclr(": scales the frame, range 0.1 to 3.5 (")..hclr(YRDSettings["SCALE"])..nclr(")"))
-	YRD_PrintMessage(hclr(" ooca #") ..nclr(": sets the OOC-Alphavalue of the frame, range 0 to 1 (")..hclr(YRDSettings["OOCA"])..nclr(")"))
-	YRD_PrintMessage(hclr(" lock")   ..nclr(": locks the frame, preventing movement"))
-	YRD_PrintMessage(hclr(" unlock") ..nclr(": unlocks the frame, click to drag"))
-	YRD_PrintMessage(hclr(" reset")  ..nclr(": resets to default settings"))
-	YRD_PrintMessage(hclr(" help")   ..nclr(": displays this help"))
-	YRD_PrintMessage(hclr(" about")  ..nclr(": shows info about this addon"))
-	YRD_PrintMessage(hclr(" numcd _")..nclr(" (")..hclr(YRDSettings["NUMCD"])..nclr("): sets numerical cooldown on or off"))
-	YRD_PrintMessage(hclr(" cdclr _")..nclr(" (")..hclr(YRDSettings["CDCLR"])..nclr("): sets the cooldown color to default (yellow/red) or rune (the color of the rune it's on)"))
-	YRD_PrintMessage(hclr(" bliz _") ..nclr(" (")..hclr(YRDSettings["BLIZ"]) ..nclr("): sets blizzard default frame on or off"))
-	YRD_PrintMessage(hclr(" arc _")  ..nclr(" (")..hclr(YRDSettings["ARC"])  ..nclr("): sets the arc happy/sad/straight"))
+	YRD_PrintMessage(hclr(" scale #")..nclr(": "..L[HELP_SCALE].." (")..hclr(YRDSettings["SCALE"])..nclr(")"))
+	YRD_PrintMessage(hclr(" ooca #") ..nclr(": "..L[HELP_OOCA].." (")..hclr(YRDSettings["OOCA"])..nclr(")"))
+	YRD_PrintMessage(hclr(" lock")   ..nclr(": "..L[HELP_LOCK]))
+	YRD_PrintMessage(hclr(" unlock") ..nclr(": "..L[HELP_UNLOCK]))
+	YRD_PrintMessage(hclr(" reset")  ..nclr(": "..L[HELP_RESET]))
+	YRD_PrintMessage(hclr(" help")   ..nclr(": "..L[HELP_HELP]))
+	YRD_PrintMessage(hclr(" about")  ..nclr(": "..L[HELP_ABOUT]))
+	YRD_PrintMessage(hclr(" numcd _")..nclr(" (")..hclr(YRDSettings["NUMCD"])..nclr("): "..L[HELP_NUMCD]))
+	YRD_PrintMessage(hclr(" cdclr _")..nclr(" (")..hclr(YRDSettings["CDCLR"])..nclr("): "..L[HELP_CDCLR]))
+	YRD_PrintMessage(hclr(" bliz _") ..nclr(" (")..hclr(YRDSettings["BLIZ"]) ..nclr("): "..L[HELP_BLIZ]))
+	YRD_PrintMessage(hclr(" arc _")  ..nclr(" (")..hclr(YRDSettings["ARC"])  ..nclr("): "..L[HELP_ARC]))
 end
 
 function YRD_About()
-	YRD_PrintMessage("About Yury's RuneDisplay:")
-	YRD_PrintMessage("Author: "     ..YRDDetails["Author"])
-	YRD_PrintMessage("Version: "    ..YRDDetails["Version"])
-	YRD_PrintMessage("Last Change: "..YRDDetails["Last_Change"])
+	YRD_PrintMessage(L["About"]		.." Yury's RuneDisplay:")
+	YRD_PrintMessage(L["Author"]		..": "..YRDDetails["Author"])
+	YRD_PrintMessage(L["Version"]	..": "..YRDDetails["Version"])
+	YRD_PrintMessage(L["Last Change"]..": "..YRDDetails["Last_Change"])
 end
 
 function YRD_PrintMessage(msg)
@@ -187,7 +170,7 @@ function YRD_PrintMessage(msg)
 end
 
 function YRD_ShowUsage()
-	YRD_PrintMessage("Usage: "..hclr("/yrd")..nclr(" {scale # | lock | unlock | reset | help | about | numcd ")..hclr("{on | off}")..nclr(" | cdclr ")..hclr("{default | rune}")..nclr(" | bliz ")..hclr("{on | off}")..nclr(" | arc ")..hclr("{happy | sad | straight}")..nclr(" | ooca #}"))
+	YRD_PrintMessage(L["Usage"]..": "..hclr("/yrd")..nclr(" {scale # | lock | unlock | reset | help | about | numcd ")..hclr("{on | off}")..nclr(" | cdclr ")..hclr("{default | rune}")..nclr(" | bliz ")..hclr("{on | off}")..nclr(" | arc ")..hclr("{happy | sad | straight}")..nclr(" | ooca #}"))
 end
 
 function YRD_SetOoca(alpha)
@@ -196,7 +179,7 @@ function YRD_SetOoca(alpha)
 	if (not UnitAffectingCombat("player")) then
 		YRDRuneFrame:SetAlpha(alpha)
 	end
-	YRD_PrintMessage("OOC-Alphavalue set to |r|cFF00FFFF"..alpha.."|r")
+	YRD_PrintMessage(L["MSG_OOCA"].." "..hclr(alpha))
 end
 
 function YRD_SetArc(arc)
@@ -211,7 +194,7 @@ function YRD_SetArc(arc)
 		local p,f,r,x,_ = Rune:GetPoint()
 		Rune:SetPoint(p,f,r,x,array[i])
 	end
-	YRD_PrintMessage("Arc is set to |r|cFF00FFFF"..arc.."|r")
+	YRD_PrintMessage(L["MSG_ARC"].." "..hclr(arc))
 end
 
 function YRD_UnlockFrame()
@@ -223,32 +206,32 @@ function YRD_UnlockFrame()
 		Rune:SetScript("OnDragStart", YRD_Drag)
 		Rune:SetScript("OnDragStop", YRD_Drop)
 	end
-	YRD_PrintMessage("Frame is now |r|cFF00FFFFunlocked|r")
+	YRD_PrintMessage(L["MSG_FRAME"]..hclr(" unlocked"))
 end
 
 function YRD_ShowBlizFrame()
 	YRDSettings["BLIZ"] = "on"
 	RuneFrame:Show()
-	YRD_PrintMessage("Blizzard Frame is now |r|cFF00FFFFon|r")
+	YRD_PrintMessage(L["MSG_BLIZ"]..hclr(" on"))
 end
 
 function YRD_HideBlizFrame()
 	if (YRDSettings["BLIZ"] == "off") then return end
 	YRDSettings["BLIZ"] = "off"
 	RuneFrame:Hide()
-	YRD_PrintMessage("Blizzard Frame is now |r|cFF00FFFFoff|r")
+	YRD_PrintMessage(L["MSG_BLIZ"]..hclr(" off"))
 end
 
 function YRD_SetCdClr(clr)
 	if (YRDSettings["CDCLR"] == clr) then return end
 	YRDSettings["CDCLR"] = clr
-	YRD_PrintMessage("Cooldown color is now |r|cFF00FFFF"..clr.."|r")
+	YRD_PrintMessage(L["MSG_CDCLR"].." "..hclr(clr))
 end
 
 function YRD_ShowNumCd()
 	if (YRDSettings["NUMCD"] == "on") then return end
 	YRDSettings["NUMCD"] = "on"
-	YRD_PrintMessage("Numerical cooldown is now |r|cFF00FFFFon|r")
+	YRD_PrintMessage(L["MSG_NUMCD"]..hclr(" on"))
 end
 
 function YRD_HideNumCd()
@@ -258,7 +241,7 @@ function YRD_HideNumCd()
 		local rune = getglobal("YRDRuneButtonIndividual"..i)
 		rune.text:SetText("")
 	end
-	YRD_PrintMessage("Numerical cooldown is now |r|cFF00FFFFoff|r")
+	YRD_PrintMessage(L["MSG_NUMCD"]..hclr(" off"))
 end
 
 function YRD_Drag()
@@ -279,13 +262,13 @@ function YRD_LockFrame()
 		-- Registering nothing effectively disables dragging --
 		Rune:RegisterForDrag()
 	end
-	YRD_PrintMessage("Frame is now |r|cFF00FFFFlocked|r")
+	YRD_PrintMessage(L["MSG_FRAME"]..hclr(" locked"))
 end
 
 function YRD_ScaleFrame(Scale)
 	YRDSettings["SCALE"] = Scale
 	YRDRuneFrame:SetScale(Scale)
-	YRD_PrintMessage("Scale set to |r|cFF00FFFF"..Scale.."|r")
+	YRD_PrintMessage(L["MSG_SCALE"].." "..hclr(Scale))
 end
 
 function YRD_OnEvent(self, event, ...)
@@ -293,16 +276,7 @@ function YRD_OnEvent(self, event, ...)
 		local addon = select(1, ...)
 		if ( addon == "YurysRuneDisplay" ) then
 			YRD_Init()
-			if ( YRDSettings["LOCKED"] ) then
-				YRD_PrintMessage("Frame is now |r|cFF00FFFFlocked|r")
-			end
-			if ( YRDSettings["NUMCD"] ~= "off" ) then
-				YRD_PrintMessage("Numerical cooldown is |r|cFF00FFFFon|r")
-			end
-			if ( YRDSettings["BLIZ"] ~= "on" ) then
-				YRD_PrintMessage("Blizzard Frame is |r|cFF00FFFFoff|r")
-			end
-			YRD_PrintMessage("Yury's RuneDisplay loaded ('/yrd' for help)...")
+			YRD_PrintMessage(L["MSG_LOADED"])
 		end
 	end
 end
@@ -321,7 +295,7 @@ function YRD_ResetFrame()
 	YRD_ShowNumCd()
 	YRD_HideBlizFrame()
 	YRD_SetArc(YRDSettings["ARC"])
-	YRD_PrintMessage("Reset to defaults")
+	YRD_PrintMessage(L["MSG_RESET"])
 end
 
 function YRD_InitVals()

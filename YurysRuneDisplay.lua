@@ -1,6 +1,6 @@
 local YRDDetails = {
 	Author = "Yury (EU-Turalyon)",
-	Version = "1.4@project-version@",
+	Version = "@project-version@",
 	Last_Change = " @project-date-iso@"
 }
 

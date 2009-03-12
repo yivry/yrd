@@ -33,6 +33,14 @@ runeMapping = {
 }
 
 function YRDRuneButton_OnLoad (self)
+	-- Disable rune frame if not a death knight --
+	local _, class = UnitClass("player")
+
+	if ( class ~= "DEATHKNIGHT" ) then
+		self:Hide()
+		return
+	end
+	
 	RuneFrame_AddRune(YRDRuneFrame, self)
 
 	self.rune = getglobal(self:GetName().."Rune")
@@ -136,7 +144,11 @@ function YRDRuneFrame_OnEvent (self, event, ...)
 		end
 	elseif (event == "PLAYER_REGEN_ENABLED") then
 		YRDRuneFrame:SetAlpha(YRDSettings["OOCA"])
+		if (YRDSettings["OOCA"] == 0) then
+			YRDRuneFrame:Hide()
+		end
 	elseif (event == "PLAYER_REGEN_DISABLED") then
+		YRDRuneFrame:Show()
 		YRDRuneFrame:SetAlpha(1)
 	end
 end

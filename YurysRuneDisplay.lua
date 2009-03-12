@@ -176,8 +176,10 @@ end
 function YRD_SetOoca(alpha)
 	if (alpha == nil) then alpha = 1 end
 	YRDSettings["OOCA"] = alpha
+	if (alpha ~= 0) then YRDRuneFrame:Show() end
 	if (not UnitAffectingCombat("player")) then
 		YRDRuneFrame:SetAlpha(alpha)
+		if (alpha == 0) then YRDRuneFrame:Hide() end
 	end
 	YRD_PrintMessage(L["MSG_OOCA"].." "..hclr(alpha))
 end

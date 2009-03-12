@@ -32,11 +32,11 @@
           </Texture>
         </Layer>
       </Layers>
-<!--   <Scripts>
+      <Scripts>
         <OnLoad>
           self:SetFrameLevel(self:GetFrameLevel() + 1);
         </OnLoad>
-      </Scripts> -->
+      </Scripts>
     </Frame>
     <Frame frameStrata="MEDIUM" setAllPoints="true" name="$parentShine">
       <Layers>

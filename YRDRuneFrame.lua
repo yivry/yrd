@@ -25,13 +25,6 @@ local runeColors = {
 	[RUNETYPE_DEATH]  = {0.8, 0.1, 1},
 }
 
-runeMapping = {
-	[1] = "BLOOD",
-	[2] = "UNHOLY",
-	[3] = "FROST",
-	[4] = "DEATH",
-}
-
 function YRDRuneButton_OnLoad (self)
 	-- Disable rune frame if not a death knight --
 	local _, class = UnitClass("player")

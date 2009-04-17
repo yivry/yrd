@@ -81,6 +81,7 @@ end
 function YRDRuneCdLeft(Rune, sec)
 	local t = Rune.text
 	local color = {1,1,0}
+	sec = floor(sec)
 	if (sec <= 0) then
 		sec = ""
 	elseif (YRDSettings["CDCLR"] == "rune") then

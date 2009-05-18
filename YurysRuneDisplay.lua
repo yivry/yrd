@@ -204,6 +204,7 @@ function YRD_UnlockFrame()
 	YRDSettings["LOCKED"] = false
 	for i = 1, 6 do
 		local Rune = getglobal("YRDRuneButtonIndividual"..i)
+		Rune:EnableMouse(true)
 		Rune:RegisterForDrag("LeftButton")
 		Rune:SetScript("OnDragStart", YRD_Drag)
 		Rune:SetScript("OnDragStop", YRD_Drop)
@@ -263,6 +264,7 @@ function YRD_LockFrame()
 		local Rune = getglobal("YRDRuneButtonIndividual"..i)
 		-- Registering nothing effectively disables dragging --
 		Rune:RegisterForDrag()
+		Rune:EnableMouse(false)
 	end
 	YRD_PrintMessage(L["MSG_FRAME"]..hclr(" locked"))
 end

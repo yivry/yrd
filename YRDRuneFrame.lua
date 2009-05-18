@@ -40,6 +40,7 @@ function YRDRuneButton_OnLoad (self)
 	self.shine = getglobal(self:GetName().."ShineTexture")
 	self.lastUpdate = 0
 	self:SetFrameStrata("MEDIUM")
+	self:EnableMouse(false)
 	self.text = self:CreateFontString(nil, "OVERLAY")
 	local t = self.text
 	t:SetPoint("CENTER", 0, 0)

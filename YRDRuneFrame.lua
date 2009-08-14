@@ -41,13 +41,14 @@ function YRDRuneButton_OnLoad (self)
 	self.lastUpdate = 0
 	self:SetFrameStrata("MEDIUM")
 	self:EnableMouse(false)
-	self.text = self:CreateFontString(nil, "OVERLAY")
-	local t = self.text
-	t:SetPoint("CENTER", 0, 0)
-	t:SetTextColor(1, 1, 0)
-	t:SetJustifyH("CENTER")
-	t:SetShadowOffset(1, -1)
+	local cooldown = getglobal(self:GetName().."Cooldown")
+	cooldown.noCooldownCount = true		-- disable OmniCC numbers --
+	cooldown.text = cooldown:CreateFontString(nil, "OVERLAY")
+	local t = cooldown.text
 	t:SetFont("Fonts\\FRIZQT__.TTF", 18, "OUTLINE")
+	t:SetPoint("CENTER", 0, 1)
+	t:SetTextColor(1, 1, 0)
+	t:SetShadowOffset(1, -1)
 	RuneButton_Update(self)
 end
 
@@ -80,7 +81,7 @@ function YRDRuneCooldown(Rune)
 end
 
 function YRDRuneCdLeft(Rune, sec)
-	local t = Rune.text
+	local t = getglobal(Rune:GetName().."Cooldown").text
 	local color = {1,1,0}
 	sec = floor(sec)
 	if (sec <= 0) then
@@ -138,12 +139,29 @@ function YRDRuneFrame_OnEvent (self, event, ...)
 			RuneButton_Update(self.runes[rune], rune)
 		end
 	elseif (event == "PLAYER_REGEN_ENABLED") then
-		YRDRuneFrame:SetAlpha(YRDSettings["OOCA"])
-		if (YRDSettings["OOCA"] == 0) then
-			YRDRuneFrame:Hide()
+		if (YRDSettings["OOCA"] ~= 1) then
+			self:SetScript("OnUpdate", YRDRuneFrame_Fade)
 		end
 	elseif (event == "PLAYER_REGEN_DISABLED") then
 		YRDRuneFrame:Show()
 		YRDRuneFrame:SetAlpha(1)
+	end
+end
+
+function YRDRuneFrame_Fade(self)
+	local ready = true
+	for i = 1, 6 do
+		local Rune = getglobal("YRDRuneButtonIndividual"..i)
+		_,_,isReady = GetRuneCooldown(Rune:GetID())
+		if ( not isReady ) then
+			ready = false
+		end
+	end
+	if ( ready ) then
+		YRDRuneFrame:SetAlpha(YRDSettings["OOCA"])
+		if (YRDSettings["OOCA"] == 0) then
+			YRDRuneFrame:Hide()
+		end
+		self:SetScript("OnUpdate", nil)
 	end
 end

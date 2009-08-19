@@ -1,11 +1,100 @@
 -- only load this addon on a Death Knight --
-if ( select(2, UnitClass("player")) == "DEATHKNIGHT" ) then
-	YurysRuneDisplay = LibStub("AceAddon-3.0"):NewAddon("YurysRuneDisplay", "AceEvent-3.0")
-	local L = LibStub("AceLocale-3.0"):GetLocale("YurysRuneDisplay", true)
-	LibStub("AceConfig-3.0"):RegisterOptionsTable("YurysRuneDisplay", YurysRuneDisplay:GetOptionsTable(), {L["yrd"]})
-	-- Fix some bliz thing --
-	local FirstTime = true
-end
+if ( select(2, UnitClass("player")) ~= "DEATHKNIGHT" ) then return end
+
+YurysRuneDisplay = LibStub("AceAddon-3.0"):NewAddon("YurysRuneDisplay", "AceEvent-3.0")
+local L = LibStub("AceLocale-3.0"):GetLocale("YurysRuneDisplay", true)
+
+local optionsTable = {
+	name = L["Yury's RuneDisplay"],
+	handler = YurysRuneDisplay,
+	type = "group",
+	args = {
+		lock = {
+			name = L["Lock"],
+			desc = L["Locks Yury's RuneDisplay, preventing moving it"],
+			type = "toggle",
+			set = "SetLock",
+			get = "GetLock"
+		},
+		unlock = {
+			name = L["Unlock"],
+			desc = L["Unlocks Yury's RuneDisplay, allowing it to be moved"],
+			type = "toggle",
+			set = "SetUnlock",
+			get = "GetUnlock",
+			hidden = true
+		},
+		numcd = {
+			name = L["Numerical Cooldown"],
+			desc = L["Enable/disable the numerical cooldown"],
+			type = "toggle",
+			set = "SetNumcd",
+			get = "GetNumcd"
+		},
+		cdclr = {
+			name = L["Cooldown color"],
+			desc = L["Color of the numerical cooldown"],
+			type = "select",
+			values = {
+				default = L["Default"],
+				rune = L["Rune"]
+			},
+			set = "SetCdclr",
+			get = "GetCdclr"
+		},
+		scale = {
+			name = L["Scale"],
+			desc = L["Scale Yury's RuneDisplay; make it bigger (>1) or smaller (<1)"],
+			type = "range",
+			min = 0.1,
+			max = 3,
+			bigStep = 0.1,
+			get = "GetScale",
+			set = "SetScale"
+		},
+		ooca = {
+			name = L["Out Of Combat Alpha-value"],
+			desc = L["Sets the OOCA of Yury's RuneDisplay, to make it less visible when not in combat"],
+			type = "range",
+			min = 0,
+			max = 1,
+			bigStep = 0.1,
+			get = "GetOoca",
+			set = "SetOoca"
+		},
+		bliz = {
+			name = L["Blizzard frame"],
+			desc = L["Shows/hides Blizzard's default runebar"],
+			type = "toggle",
+			get = "GetBliz",
+			set = "SetBliz"
+		},
+		arc = {
+			name = L["Arc"],
+			desc = L["Sets the arc-type of Yury's RuneDisplay"],
+			type = "select",
+			values = {
+				happy = L["Happy mouth"],
+				sad = L["Sad mouth"],
+				straight = L["Straight line"]
+			},
+			get = "GetArc",
+			set = "SetArc"
+		},
+		reset = {
+			name = L["Reset"],
+			desc = L["Resets all options to default values"],
+			type = "execute",
+			func = "SetDefaults"
+		}
+	}
+}
+
+LibStub("AceConfig-3.0"):RegisterOptionsTable("YurysRuneDisplay", optionsTable, {L["yrd"]})
+
+-- Fix some bliz thing --
+local FirstTime = true
+
 
 -- General Handlers --
 function YurysRuneDisplay:OnDisable()
@@ -58,6 +147,7 @@ end
 
 function YurysRuneDisplay:OnInitialize()
 	self.db = LibStub("AceDB-3.0"):New("YurysRuneDisplayDB", YurysRuneDisplay:GetDefaults())
+	self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("YurysRuneDisplay", "YurysRuneDisplay")
 	YurysRuneDisplay:ApplySettings()
 end
 
@@ -222,19 +312,21 @@ end
 
 function YurysRuneDisplay:GetDefaults()
 	local defaultValues = {
-		ARC = "happy",
-		BLIZ = false,
-		CDCLR = "default",
-		LOCKED = true,
-		NUMCD = true,
-		OOCA = 0.5,
-		POSITION = {
-			POINT = "CENTER",
-			RELATIVE = "CENTER",
-			XCOORD = 0,
-			YCOORD = 1,
-		},
-		SCALE = 1
+		char = {
+			ARC = "happy",
+			BLIZ = false,
+			CDCLR = "default",
+			LOCKED = true,
+			NUMCD = true,
+			OOCA = 0.5,
+			POSITION = {
+				POINT = "CENTER",
+				RELATIVE = "CENTER",
+				XCOORD = 0,
+				YCOORD = 1
+			},
+			SCALE = 1
+		}
 	}
 	return defaultValues
 end
@@ -249,95 +341,6 @@ end
 
 function YurysRuneDisplay:GetOoca()
 	return self.db.char.OOCA
-end
-
-function YurysRuneDisplay:GetOptionsTable()
-	local optionsTable = {
-		name = L["Yury's RuneDisplay"],
-		handler = "YurysRuneDisplay",
-		type = "group",
-		args = {
-			lock = {
-				name = L["Lock"],
-				desc = L["Locks Yury's RuneDisplay, preventing moving it"],
-				type = "toggle",
-				set = "SetLock",
-				get = "GetLock"
-			},
-			unlock = {
-				name = L["Unlock"],
-				desc = L["Unlocks Yury's RuneDisplay, allowing it to be moved"],
-				type = "toggle",
-				set = "SetUnlock",
-				get = "GetUnlock",
-				hidden = true
-			},
-			numcd = {
-				name = L["Numerical Cooldown"],
-				desc = L["Enable/disable the numerical cooldown"],
-				type = "toggle",
-				set = "SetNumcd",
-				get = "GetNumcd"
-			},
-			cdclr = {
-				name = L["Cooldown color"],
-				desc = L["Color of the numerical cooldown"],
-				type = "select",
-				values = {
-					default = L["Default"],
-					rune = L["Rune"]
-				},
-				set = "SetCdclr",
-				get = "GetCdclr"
-			},
-			scale = {
-				name = L["Scale"],
-				desc = L["Scale Yury's RuneDisplay; make it bigger (>1) or smaller (<1)"],
-				type = "range",
-				min = 0.1,
-				max = 3,
-				bigStep = 0.1,
-				get = "GetScale",
-				set = "SetScale"
-			},
-			ooca = {
-				name = L["Out Of Combat Alpha-value"],
-				desc = L["Sets the OOCA of Yury's RuneDisplay, to make it less visible when not in combat"],
-				type = "range",
-				min = 0,
-				max = 1,
-				bigStep = 0.1,
-				get = "GetOoca",
-				set = "SetOoca"
-			},
-			bliz = {
-				name = L["Blizzard frame"],
-				desc = L["Shows/hides Blizzard's default runebar"],
-				type = "toggle",
-				get = "GetBliz",
-				set = "SetBliz"
-			},
-			arc = {
-				name = L["Arc"],
-				desc = L["Sets the arc-type of Yury's RuneDisplay"],
-				type = "select",
-				values = {
-					happy = L["Happy mouth"],
-					sad = L["Sad mouth"],
-					straight = L["Straight line"]
-				},
-				get = "GetArc",
-				set = "SetArc"
-			},
-			reset = {
-				name = L["Reset"],
-				desc = L["Resets all options to default values"],
-				type = "execute",
-				func = "SetDefaults"
-			}
-		}
-	}
-	return optionsTable
 end
 
 function YurysRuneDisplay:GetPosition()

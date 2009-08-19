@@ -9,15 +9,15 @@
 	<Include file="Libs\AceLocale-3.0\AceLocale-3.0.xml"/>
 
  	<!-- Get all localizations -->
- 	<Script file="Localizations/deDE.lua"/>
- 	<Script file="Localizations/enUS.lua"/>
- 	<Script file="Localizations/esES.lua"/>
- 	<Script file="Localizations/esMX.lua"/>
- 	<Script file="Localizations/frFR.lua"/>
- 	<Script file="Localizations/koKR.lua"/>
- 	<Script file="Localizations/ruRU.lua"/>
- 	<Script file="Localizations/zhCN.lua"/>
- 	<Script file="Localizations/zhTW.lua"/>
+ 	<Script file="Localizations\deDE.lua"/>
+ 	<Script file="Localizations\enUS.lua"/>
+ 	<Script file="Localizations\esES.lua"/>
+ 	<Script file="Localizations\esMX.lua"/>
+ 	<Script file="Localizations\frFR.lua"/>
+ 	<Script file="Localizations\koKR.lua"/>
+ 	<Script file="Localizations\ruRU.lua"/>
+ 	<Script file="Localizations\zhCN.lua"/>
+ 	<Script file="Localizations\zhTW.lua"/>
  
  	<!-- Get the RuneDisplay -->
  	<Script file="YRDRuneFrame.lua"/>

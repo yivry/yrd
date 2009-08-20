@@ -13,6 +13,29 @@
 						</Offset>
 					</Anchor>
 				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString name="$parentText" font="Fonts\FRIZQT__.TTF" text="" justifyH="CENTER" justifyV="MIDDLE">
+							<Color r="1" g="1" b="0" a="1" />
+							<FontHeight>
+								<AbsValue val="18" />
+							</FontHeight>
+							<Anchors>
+								<Anchor point="CENTER" relativeTo="$parent" relativePoint="CENTER">
+									<Offset>
+										<AbsDimension x="0" y="1" />
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<Shadow>
+								<offset>
+									<AbsDimension x="1" y="-1" />
+								</offset>
+								<Color r="0" g="0" b="0" a="1" />
+							</Shadow>
+						</FontString>
+					</Layer>
+				</Layers>
 			</Cooldown>
 			<Frame name="$parentBorder" frameStrata="LOW">
 				<Size x="24" y="24" />
@@ -62,27 +85,6 @@
 						</Anchor>
 					</Anchors>
 				</Texture>
-			</Layer>
-			<Layer level="OVERLAY">
-				<FontString name="$parentText" font="Fonts\FRIZQT__.TTF" text="" justifyH="CENTER" justifyV="MIDDLE">
-					<Color r="1" g="1" b="0" a="1" />
-					<FontHeight>
-						<AbsValue val="18" />
-					</FontHeight>
-					<Anchors>
-						<Anchor point="CENTER" relativeTo="$parent" relativePoint="CENTER">
-							<Offset>
-								<AbsDimension x="0" y="1" />
-							</Offset>
-						</Anchor>
-					</Anchors>
-					<Shadow>
-						<offset>
-							<AbsDimension x="1" y="-1" />
-						</offset>
-						<Color r="0" g="0" b="0" a="1" />
-					</Shadow>
-				</FontString>
 			</Layer>
 		</Layers>
 		<Scripts>

@@ -2,99 +2,31 @@
 if ( select(2, UnitClass("player")) ~= "DEATHKNIGHT" ) then return end
 
 YurysRuneDisplay = LibStub("AceAddon-3.0"):NewAddon("YurysRuneDisplay", "AceEvent-3.0")
-local L = LibStub("AceLocale-3.0"):GetLocale("YurysRuneDisplay", true)
 
-local optionsTable = {
-	name = L["Yury's RuneDisplay"],
-	handler = YurysRuneDisplay,
-	type = "group",
-	args = {
-		lock = {
-			name = L["Lock"],
-			desc = L["Locks Yury's RuneDisplay, preventing moving it"],
-			type = "toggle",
-			set = "SetLock",
-			get = "GetLock"
-		},
-		unlock = {
-			name = L["Unlock"],
-			desc = L["Unlocks Yury's RuneDisplay, allowing it to be moved"],
-			type = "toggle",
-			set = "SetUnlock",
-			get = "GetUnlock",
-			hidden = true
-		},
-		numcd = {
-			name = L["Numerical Cooldown"],
-			desc = L["Enable/disable the numerical cooldown"],
-			type = "toggle",
-			set = "SetNumcd",
-			get = "GetNumcd"
-		},
-		cdclr = {
-			name = L["Cooldown color"],
-			desc = L["Color of the numerical cooldown"],
-			type = "select",
-			values = {
-				default = L["Default"],
-				rune = L["Rune"]
-			},
-			set = "SetCdclr",
-			get = "GetCdclr"
-		},
-		scale = {
-			name = L["Scale"],
-			desc = L["Scale Yury's RuneDisplay; make it bigger (>1) or smaller (<1)"],
-			type = "range",
-			min = 0.1,
-			max = 3,
-			bigStep = 0.1,
-			get = "GetScale",
-			set = "SetScale"
-		},
-		ooca = {
-			name = L["Out Of Combat Alpha-value"],
-			desc = L["Sets the OOCA of Yury's RuneDisplay, to make it less visible when not in combat"],
-			type = "range",
-			min = 0,
-			max = 1,
-			bigStep = 0.1,
-			get = "GetOoca",
-			set = "SetOoca"
-		},
-		bliz = {
-			name = L["Blizzard frame"],
-			desc = L["Shows/hides Blizzard's default runebar"],
-			type = "toggle",
-			get = "GetBliz",
-			set = "SetBliz"
-		},
-		arc = {
-			name = L["Arc"],
-			desc = L["Sets the arc-type of Yury's RuneDisplay"],
-			type = "select",
-			values = {
-				happy = L["Happy mouth"],
-				sad = L["Sad mouth"],
-				straight = L["Straight line"]
-			},
-			get = "GetArc",
-			set = "SetArc"
-		},
-		reset = {
-			name = L["Reset"],
-			desc = L["Resets all options to default values"],
-			type = "execute",
-			func = "SetDefaults"
-		}
-	}
-}
-
-LibStub("AceConfig-3.0"):RegisterOptionsTable("YurysRuneDisplay", optionsTable, {L["yrd"]})
-
--- Fix some bliz thing --
+-- RuneFrame variables --
 local FirstTime = true
-
+local RUNETYPE_BLOOD  = 1
+local RUNETYPE_UNHOLY = 2
+local RUNETYPE_FROST  = 3
+local RUNETYPE_DEATH  = 4
+local iconTextures = {
+	[RUNETYPE_BLOOD]  = "Interface\\PlayerFrame\\UI-PlayerFrame-Deathknight-Blood",
+	[RUNETYPE_UNHOLY] = "Interface\\PlayerFrame\\UI-PlayerFrame-Deathknight-Unholy",
+	[RUNETYPE_FROST]  = "Interface\\PlayerFrame\\UI-PlayerFrame-Deathknight-Frost",
+	[RUNETYPE_DEATH]  = "Interface\\PlayerFrame\\UI-PlayerFrame-Deathknight-Death"
+}
+local runeColors = {
+	[RUNETYPE_BLOOD]  = {1,   0,   0},
+	[RUNETYPE_UNHOLY] = {0,   0.5, 0},
+	[RUNETYPE_FROST]  = {0,   1,   1},
+	[RUNETYPE_DEATH]  = {0.8, 0.1, 1}
+}
+local runeTextures = {
+	[RUNETYPE_BLOOD]  = "Interface\\PlayerFrame\\UI-PlayerFrame-DeathKnight-Blood-Off.tga",
+	[RUNETYPE_UNHOLY] = "Interface\\PlayerFrame\\UI-PlayerFrame-DeathKnight-Death-Off.tga",
+	[RUNETYPE_FROST]  = "Interface\\PlayerFrame\\UI-PlayerFrame-DeathKnight-Frost-Off.tga",
+	[RUNETYPE_DEATH]  = "Interface\\PlayerFrame\\UI-PlayerFrame-Deathknight-Chromatic-Off.tga"
+}
 
 -- General Handlers --
 function YurysRuneDisplay:OnDisable()
@@ -132,9 +64,9 @@ function YurysRuneDisplay:OnEnable()
 	print(L["Yury's RuneDisplay enabled. For options: /"]..L["yrd"])
 end
 
-function YurysRuneDisplay:OnFrameFade(self)
+function YurysRuneDisplay:OnFrameFade()
 	local ready = true
-	for rune in next, self.runes do
+	for rune in next, YRDRuneFrame.runes do
 		_, _, isReady = GetRuneCooldown(rune)
 		if (not isReady) then
 			ready = false
@@ -146,8 +78,10 @@ function YurysRuneDisplay:OnFrameFade(self)
 end
 
 function YurysRuneDisplay:OnInitialize()
+	L = LibStub("AceLocale-3.0"):GetLocale("YurysRuneDisplay", true)
+	LibStub("AceConfig-3.0"):RegisterOptionsTable("YurysRuneDisplay", YurysRuneDisplay:GetOptionsTable(), {L["yrd"]})
 	self.db = LibStub("AceDB-3.0"):New("YurysRuneDisplayDB", YurysRuneDisplay:GetDefaults())
-	self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("YurysRuneDisplay", "YurysRuneDisplay")
+	self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("YurysRuneDisplay", "Yury's RuneDisplay")
 	YurysRuneDisplay:ApplySettings()
 end
 
@@ -217,10 +151,10 @@ function YurysRuneDisplay:ApplyCooldown(rune, time)
 	local color = {1,1,0}
 	if (time == 0) then
 		time = ""
-	elseif (YurysRuneDisplay:GetCdclr()) then
-		color = runeColors[GetRuneType(rune)]
+	elseif (YurysRuneDisplay:GetCdclr() == "rune") then
+		color = runeColors[GetRuneType(rune:GetID())]
 	elseif (time < 3) then
-		local _,g,_ = t:GetTextColor()
+		local _,g,_ = rune.text:GetTextColor()
 		if (g > 0.5) then color = {1,0,0} end
 	end
 	rune.text:SetTextColor(unpack(color))
@@ -286,6 +220,21 @@ function YurysRuneDisplay:ApplyUnlock()
 end
 
 -- Getters --
+function YurysRuneDisplay:GetAbout()
+	local about = string.format(
+		"|cFFFFD000%s:|r %s\n"..
+		"|cFFFFD000%s:|r %s\n\n"..
+		"|cFFFFD000%s:|r\n%s",
+		L["Author"],
+		GetAddOnMetadata("YurysRuneDisplay","Author"),
+		L["Version"],
+		GetAddOnMetadata("YurysRuneDisplay","Version"),
+		L["Notes"],
+		L["Very simple and lightweight addon for display of a Death Knight's runes (because the default frame is uncontrollable)"]
+	)
+	return about
+end
+
 function YurysRuneDisplay:GetArc()
 	return self.db.char.ARC
 end
@@ -298,13 +247,17 @@ function YurysRuneDisplay:GetCdclr()
 	return self.db.char.CDCLR
 end
 
+function YurysRuneDisplay:GetConfigDialog()
+	InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
+end
+
 function YurysRuneDisplay:GetCooldownUpdate(rune)
-	local start, duration, ready = GetRuneCooldown(rune)
+	local start, duration, ready = GetRuneCooldown(rune:GetID())
 	local now = GetTime()
 	local FREQ = 0.5
 	if (ready or (now - start) >= duration) then
 		return true, 0
-	elseif (now >= Rune.lastUpdate + FREQ) then
+	elseif (now >= rune.lastUpdate + FREQ) then
 		return true, duration - floor(now - start)
 	end
 	return false, nil
@@ -343,6 +296,137 @@ function YurysRuneDisplay:GetOoca()
 	return self.db.char.OOCA
 end
 
+function YurysRuneDisplay:GetOptionsTable()
+	local optionsTable = {
+		name = L["Yury's RuneDisplay"],
+		handler = YurysRuneDisplay,
+		type = "group",
+		args = {
+			guilock = {
+				name = L["Lock"],
+				desc = L["Locks Yury's RuneDisplay, preventing moving it"],
+				type = "toggle",
+				set = "SetGuiLock",
+				get = "GetLock",
+				width = "full",
+				order = 1,
+				cmdHidden = true
+			},
+			lock = {
+				name = L["Lock"],
+				desc = L["Locks Yury's RuneDisplay, preventing moving it"],
+				type = "execute",
+				func = "SetLock",
+				guiHidden = true
+			},
+			unlock = {
+				name = L["Unlock"],
+				desc = L["Unlocks Yury's RuneDisplay, allowing it to be moved"],
+				type = "execute",
+				func = "SetUnlock",
+				guiHidden = true
+			},
+			numcd = {
+				name = L["Numerical Cooldown"],
+				desc = L["Enable/disable the numerical cooldown"],
+				type = "toggle",
+				set = "SetNumcd",
+				get = "GetNumcd",
+				order = 4
+			},
+			cdclr = {
+				name = L["Cooldown color"],
+				desc = L["Color of the numerical cooldown"],
+				type = "select",
+				values = {
+					default = L["Default"],
+					rune = L["Rune"]
+				},
+				set = "SetCdclr",
+				get = "GetCdclr",
+				order = 5
+			},
+			scale = {
+				name = L["Scale"],
+				desc = L["Scale Yury's RuneDisplay; make it bigger (>1) or smaller (<1)"],
+				type = "range",
+				min = 0.1,
+				max = 3,
+				bigStep = 0.1,
+				get = "GetScale",
+				set = "SetScale",
+				order = 7
+			},
+			ooca = {
+				name = L["Out Of Combat Alpha-value"],
+				desc = L["Sets the OOCA of Yury's RuneDisplay, to make it less visible when not in combat"],
+				type = "range",
+				min = 0,
+				max = 1,
+				bigStep = 0.1,
+				get = "GetOoca",
+				set = "SetOoca",
+				order = 6
+			},
+			bliz = {
+				name = L["Blizzard frame"],
+				desc = L["Shows/hides Blizzard's default runebar"],
+				type = "toggle",
+				get = "GetBliz",
+				set = "SetBliz",
+				order = 2
+			},
+			arc = {
+				name = L["Arc"],
+				desc = L["Sets the arc-type of Yury's RuneDisplay"],
+				type = "select",
+				values = {
+					happy = L["Happy mouth"],
+					sad = L["Sad mouth"],
+					straight = L["Straight line"]
+				},
+				get = "GetArc",
+				set = "SetArc",
+				order = 3
+			},
+			reset = {
+				name = L["Reset"],
+				desc = L["Resets all options to default values"],
+				type = "execute",
+				func = "SetDefaults",
+				order = 8
+			},
+			config = {
+				name = L["Config"],
+				desc = L["Shows the configuration screen"],
+				type = "execute",
+				func = "GetConfigDialog",
+				guiHidden = true
+			},
+			whitespace = {
+				type = "header",
+				name = "",
+				cmdHidden = true,
+				order = 9
+			},
+			about = {
+				type = "group",
+				name = L["About"],
+				args = {
+					about = {
+						name = YurysRuneDisplay:GetAbout(),
+						type = "description"
+					}
+				},
+				inline = true,
+				order = 10,
+				cmdHidden = true
+			}
+		}
+	}
+	return optionsTable
+end
+
 function YurysRuneDisplay:GetPosition()
 	return self.db.char.POSITION
 end
@@ -377,14 +461,21 @@ end
 
 function YurysRuneDisplay:SetDefaults()
 	-- set the variables --
-	self.db.char = YurysRuneDisplay:GetDefaults()
+	self.db = YurysRuneDisplay:GetDefaults()
 	-- apply settings --
 	YurysRuneDisplay:ApplySettings()
 end
 
-function YurysRuneDisplay:SetLock(info, value)
+function YurysRuneDisplay:SetGuiLock(info, value)
 	-- set the variable --
 	self.db.char.LOCKED = value
+	-- apply settings to the frame --
+	YurysRuneDisplay:ApplyLock()
+end
+
+function YurysRuneDisplay:SetLock()
+	-- set the variable --
+	self.db.char.LOCKED = true
 	-- apply settings to the frame --
 	YurysRuneDisplay:ApplyLock()
 end
@@ -413,9 +504,9 @@ function YurysRuneDisplay:SetScale(info, value)
 	YurysRuneDisplay:ApplyScale()
 end
 
-function YurysRuneDisplay:SetUnlock(info, value)
+function YurysRuneDisplay:SetUnlock()
 	-- set the variable --
-	self.db.char.LOCKED = not value
+	self.db.char.LOCKED = false
 	-- apply settings to the frame --
 	YurysRuneDisplay:ApplyUnlock()
 end

@@ -23,7 +23,7 @@ function YRDRuneButton_OnUpdate(self, elapsed)
 	local displayCooldown = (runeReady and 0) or 1;
 	CooldownFrame_SetTimer(self.cooldown, start, duration, displayCooldown);
 	if (YurysRuneDisplay:GetNumcd()) then
-		apply, time = YurysRuneDisplay:GetCooldownUpdate(self)
+		local apply, time = YurysRuneDisplay:GetCooldownUpdate(self)
 		if (apply) then
 			YurysRuneDisplay:ApplyCooldown(self, time)
 		end

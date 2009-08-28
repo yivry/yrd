@@ -225,12 +225,9 @@ function YurysRuneDisplay:GetAbout()
 		"|cFFFFD000%s:|r %s\n"..
 		"|cFFFFD000%s:|r %s\n\n"..
 		"|cFFFFD000%s:|r\n%s",
-		L["Author"],
-		GetAddOnMetadata("YurysRuneDisplay","Author"),
-		L["Version"],
-		GetAddOnMetadata("YurysRuneDisplay","Version"),
-		L["Notes"],
-		L["Very simple and lightweight addon for display of a Death Knight's runes (because the default frame is uncontrollable)"]
+		L["Author"], GetAddOnMetadata("YurysRuneDisplay","Author"),
+		L["Version"], GetAddOnMetadata("YurysRuneDisplay","Version"),
+		L["Notes"], L["Very simple and lightweight addon for display of a Death Knight's runes (because the default frame is uncontrollable)"]
 	)
 	return about
 end
@@ -344,7 +341,8 @@ function YurysRuneDisplay:GetOptionsTable()
 				},
 				set = "SetCdclr",
 				get = "GetCdclr",
-				order = 5
+				order = 5,
+				disabled = function() return not YurysRuneDisplay:GetNumcd() end
 			},
 			scale = {
 				name = L["Scale"],

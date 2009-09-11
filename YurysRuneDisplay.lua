@@ -251,11 +251,11 @@ end
 function YurysRuneDisplay:GetCooldownUpdate(rune)
 	local start, duration, ready = GetRuneCooldown(rune:GetID())
 	local now = GetTime()
-	local FREQ = 0.5
+	local FREQ = 0.25
 	if (ready or (now - start) >= duration) then
 		return true, 0
 	elseif (now >= rune.lastUpdate + FREQ) then
-		return true, duration - floor(now - start)
+		return true, floor((duration + 0.5) - (now - start)) -- +0.5 makes floor behave like round
 	end
 	return false, nil
 end

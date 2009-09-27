@@ -148,6 +148,7 @@ end
 
 function YurysRuneDisplay:ApplyCooldown(rune, time)
 	rune.lastUpdate = GetTime()
+	time = floor(time + 0.5) -- +0.5 makes floor behave like round
 	local color = {1,1,0}
 	if (time == 0) then
 		time = ""
@@ -255,7 +256,7 @@ function YurysRuneDisplay:GetCooldownUpdate(rune)
 	if (ready or (now - start) >= duration) then
 		return true, 0
 	elseif (now >= rune.lastUpdate + FREQ) then
-		return true, floor((duration + 0.5) - (now - start)) -- +0.5 makes floor behave like round
+		return true, duration - (now - start)
 	end
 	return false, nil
 end

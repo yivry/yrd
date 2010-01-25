@@ -126,15 +126,16 @@ end
 -- Applyers --
 function YurysRuneDisplay:ApplyArc()
 	local arcs = { 
-		happy =    {0, -8, -4, 0,  4,  8},
-		sad =      {0,  8,  4, 0, -4, -8},
-		straight = {0,  0,  0, 0,  0,  0}
+		happy =    {{0, 0}, {  0,  -8}, {0, -4}, {  0,  0}, {0,  4}, {  0,   8}},
+		sad =      {{0, 0}, {  0,   8}, {0,  4}, {  0,  0}, {0, -4}, {  0,  -8}},
+		straight = {{0, 0}, {  0,   0}, {0,  0}, {  0,  0}, {0,  0}, {  0,   0}},
+		block =	   {{0, 0}, {-18, -18}, {0,  0}, {-18, 18}, {0,  0}, {-18, -18}}
 	}
 	arcs = arcs[YurysRuneDisplay:GetArc()]
 	for i = 1, 6 do
 		local Rune = getglobal("YRDRuneButtonIndividual"..i)
-		local p,f,r,x,_ = Rune:GetPoint()
-		Rune:SetPoint(p,f,r,x,arcs[i])
+		local p,f,r,_,_ = Rune:GetPoint()
+		Rune:SetPoint(p,f,r,arcs[i][1],arcs[i][2])
 	end
 end
 
@@ -382,7 +383,8 @@ function YurysRuneDisplay:GetOptionsTable()
 				values = {
 					happy = L["Happy mouth"],
 					sad = L["Sad mouth"],
-					straight = L["Straight line"]
+					straight = L["Straight line"],
+					block = L["Block"]
 				},
 				get = "GetArc",
 				set = "SetArc",

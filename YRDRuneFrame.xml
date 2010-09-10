@@ -46,13 +46,13 @@
 					</Layer>
 				</Layers>
 				<Scripts>
-					<OnLoad>self:SetFrameLevel(self:GetFrameLevel() + 1);</OnLoad>
+					<OnLoad>RaiseFrameLevel(self);</OnLoad>
 				</Scripts>
 			</Frame>
 			<Frame frameStrata="MEDIUM" setAllPoints="true" name="$parentShine">
 				<Layers>
 					<Layer level="OVERLAY">
-						<Texture name="$parentTexture" file="Interface\ComboFrame\ComboPoint" alphaMode="ADD" hidden="true">
+						<Texture name="$parentTexture" urgency="5" file="Interface\ComboFrame\ComboPoint" alphaMode="ADD" hidden="true">
 							<Size x="60" y="35" />
 							<Anchors>
 								<Anchor point="CENTER">
@@ -102,7 +102,7 @@
 		</Scripts>
 	</Frame>
 
-	<Button name="YRDRuneButtonIndividual1" inherits="YRDRuneButtonIndividualTemplate" parent="YRDRuneFrame" id="1">
+	<Button name="YRDRuneButtonIndividual1" inherits="YRDRuneButtonIndividualTemplate" parent="YRDRuneFrame">
 		<Anchors>
 			<Anchor point="LEFT" relativeTo="YRDRuneFrame" relativePoint="LEFT">
 				<Offset>
@@ -112,7 +112,7 @@
 		</Anchors>
 	</Button>
 
-	<Button name="YRDRuneButtonIndividual2" inherits="YRDRuneButtonIndividualTemplate" parent="YRDRuneFrame" id="2">
+	<Button name="YRDRuneButtonIndividual2" inherits="YRDRuneButtonIndividualTemplate" parent="YRDRuneFrame">
 		<Anchors>
 			<Anchor point="LEFT" relativeTo="YRDRuneButtonIndividual1" relativePoint="RIGHT">
 				<Offset>
@@ -122,7 +122,7 @@
 		</Anchors>
 	</Button>
 
-	<Button name="YRDRuneButtonIndividual3" inherits="YRDRuneButtonIndividualTemplate" parent="YRDRuneFrame" id="5">
+	<Button name="YRDRuneButtonIndividual5" inherits="YRDRuneButtonIndividualTemplate" parent="YRDRuneFrame">
 		<Anchors>
 			<Anchor point="LEFT" relativeTo="YRDRuneButtonIndividual2" relativePoint="RIGHT">
 				<Offset>
@@ -132,9 +132,9 @@
 		</Anchors>
 	</Button>
 
-	<Button name="YRDRuneButtonIndividual4" inherits="YRDRuneButtonIndividualTemplate" parent="YRDRuneFrame" id="6">
+	<Button name="YRDRuneButtonIndividual6" inherits="YRDRuneButtonIndividualTemplate" parent="YRDRuneFrame">
 		<Anchors>
-			<Anchor point="LEFT" relativeTo="YRDRuneButtonIndividual3" relativePoint="RIGHT">
+			<Anchor point="LEFT" relativeTo="YRDRuneButtonIndividual5" relativePoint="RIGHT">
 				<Offset>
 					<AbsDimension x="3" y="0" />
 				</Offset>
@@ -142,9 +142,9 @@
 		</Anchors>
 	</Button>
 
-	<Button name="YRDRuneButtonIndividual5" inherits="YRDRuneButtonIndividualTemplate" parent="YRDRuneFrame" id="3">
+	<Button name="YRDRuneButtonIndividual3" inherits="YRDRuneButtonIndividualTemplate" parent="YRDRuneFrame">
 		<Anchors>
-			<Anchor point="LEFT" relativeTo="YRDRuneButtonIndividual4" relativePoint="RIGHT">
+			<Anchor point="LEFT" relativeTo="YRDRuneButtonIndividual6" relativePoint="RIGHT">
 				<Offset>
 					<AbsDimension x="3" y="4" />
 				</Offset>
@@ -152,9 +152,9 @@
 		</Anchors>
 	</Button>
 
-	<Button name="YRDRuneButtonIndividual6" inherits="YRDRuneButtonIndividualTemplate" parent="YRDRuneFrame" id="4">
+	<Button name="YRDRuneButtonIndividual4" inherits="YRDRuneButtonIndividualTemplate" parent="YRDRuneFrame">
 		<Anchors>
-			<Anchor point="LEFT" relativeTo="YRDRuneButtonIndividual5" relativePoint="RIGHT">
+			<Anchor point="LEFT" relativeTo="YRDRuneButtonIndividual3" relativePoint="RIGHT">
 				<Offset>
 					<AbsDimension x="3" y="8" />
 				</Offset>

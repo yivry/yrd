@@ -4,11 +4,13 @@ if ( select(2, UnitClass("player")) ~= "DEATHKNIGHT" ) then return end
 YurysRuneDisplay = LibStub("AceAddon-3.0"):NewAddon("YurysRuneDisplay", "AceEvent-3.0")
 
 -- RuneFrame variables --
-local FirstTime = true
-local RUNETYPE_BLOOD  = 1
-local RUNETYPE_UNHOLY = 2
-local RUNETYPE_FROST  = 3
-local RUNETYPE_DEATH  = 4
+local MAX_RUNES = 6;
+local runeMapping = {
+	[1] = "BLOOD",
+	[2] = "UNHOLY",
+	[3] = "FROST",
+	[4] = "DEATH",
+}
 local iconTextures = {
 	[RUNETYPE_BLOOD]  = "Interface\\PlayerFrame\\UI-PlayerFrame-Deathknight-Blood",
 	[RUNETYPE_UNHOLY] = "Interface\\PlayerFrame\\UI-PlayerFrame-Deathknight-Unholy",
@@ -87,12 +89,11 @@ end
 
 -- Event Handlers --
 function YurysRuneDisplay:PLAYER_ENTERING_WORLD()
-	if (FirstTime) then
-		RuneFrame_FixRunes(YRDRuneFrame)
-		FirstTime = false
-	end
-	for rune in next, YRDRuneFrame.runes do
-		RuneButton_Update(YRDRuneFrame.runes[rune], rune, true)
+	for i=1,MAX_RUNES do
+		local runeButton = _G["YRDRuneButtonIndividual"..i];
+		if runeButton then
+			RuneButton_Update(runeButton, i, true);
+		end
 	end
 end
 
@@ -107,20 +108,25 @@ function YurysRuneDisplay:PLAYER_REGEN_DISABLED()
 	YRDRuneFrame:Show()
 end
 
-function YurysRuneDisplay:RUNE_POWER_UPDATE(event, rune, usable)
-	local r = YRDRuneFrame.runes
-	if ( not usable and rune and r[rune] ) then
-		r[rune]:SetScript("OnUpdate", YRDRuneButton_OnUpdate)
-	elseif ( usable and rune and r[rune] ) then
-		r[rune].shine:SetVertexColor(1, 1, 1)
-		RuneButton_ShineFadeIn(r[rune].shine)
+function YurysRuneDisplay:RUNE_POWER_UPDATE(event, runeIndex)
+	local runeButton = _G["YRDRuneButtonIndividual"..runeIndex];
+
+	local start, duration, runeReady = GetRuneCooldown(runeIndex);
+	if not runeReady  then
+		if start then
+			CooldownFrame_SetTimer(runeButton.cooldown, start, duration, 1);
+		end
+	else
+		runeButton.cooldown:Hide();
+		runeButton.shine:SetVertexColor(1, 1, 1);
+		RuneButton_ShineFadeIn(runeButton.shine)
 	end
 end
 
-function YurysRuneDisplay:RUNE_TYPE_UPDATE(event, rune)
-	if (rune) then
-		RuneButton_Update(YRDRuneFrame.runes[rune], rune);
-	end
+function YurysRuneDisplay:RUNE_TYPE_UPDATE(event, runeIndex)
+	if ( runeIndex and runeIndex >= 1 and runeIndex <= MAX_RUNES ) then
+			RuneButton_Update(_G["YRDRuneButtonIndividual"..runeIndex], runeIndex);
+		end
 end
 
 -- Applyers --

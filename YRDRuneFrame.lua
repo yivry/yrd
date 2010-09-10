@@ -8,12 +8,13 @@ function YRDRuneButton_OnLoad(self)
 	RuneFrame_AddRune(YRDRuneFrame, self)
 	-- define some extra settings --
 	local name = self:GetName()
+	self.lastUpdate = 0
+	self.rune  = getglobal(name.."Rune")
+	self.fill  = getglobal(name.."Fill");
+	self.shine = getglobal(name.."ShineTexture")
+	self.text  = getglobal(name.."CooldownText")
 	self.cooldown = getglobal(name.."Cooldown")
 	self.cooldown.noCooldownCount = true	-- disable OmniCC numbers --
-	self.lastUpdate = 0
-	self.rune = getglobal(name.."Rune")
-	self.shine = getglobal(name.."ShineTexture")
-	self.text = getglobal(name.."CooldownText")
 	-- update --
 	RuneButton_Update(self)
 end
@@ -39,5 +40,4 @@ function YRDRuneFrame_OnLoad(self)
 		self:Hide()
 		return
 	end
-	self.runes = {}
 end

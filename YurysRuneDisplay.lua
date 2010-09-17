@@ -532,3 +532,5 @@ function YurysRuneDisplay:SetUnlock()
 	-- apply settings to the frame --
 	YurysRuneDisplay:ApplyUnlock()
 end
+
+oldShow = RuneFrame.Show; RuneFrame.Show = function() print('showing my frame'); oldShow() end

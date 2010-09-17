@@ -74,7 +74,7 @@ end
 function YurysRuneDisplay:OnFrameFade()
 	local ready = true
 	for i=1,MAX_RUNES do
-		_, _, isReady = GetRuneCooldown(_G["YRDRuneButtonIndividual"..i])
+		_, _, isReady = GetRuneCooldown(i)
 		if (not isReady) then
 			ready = false
 			break

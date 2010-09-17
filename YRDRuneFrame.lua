@@ -9,7 +9,6 @@ function YRDRuneButton_OnLoad(self)
 	local name = self:GetName()
 	self.lastUpdate = 0
 	self.rune  = _G[name.."Rune"]
-	self.fill  = _G[name.."Fill"]
 	self.shine = _G[name.."ShineTexture"]
 	self.text  = _G[name.."CooldownText"]
 	self.cooldown = _G[name.."Cooldown"]

@@ -56,6 +56,7 @@ function YurysRuneDisplay:OnDragStop()
 end
 
 function YurysRuneDisplay:OnEnable()
+	RuneFrame:HookScript("OnShow", function () print("showing...") end)
 	-- Register events --
 	YurysRuneDisplay:RegisterEvent("PLAYER_ENTERING_WORLD")
 	YurysRuneDisplay:RegisterEvent("PLAYER_REGEN_ENABLED")
@@ -154,12 +155,11 @@ function YurysRuneDisplay:ApplyArc()
 end
 
 function YurysRuneDisplay:ApplyBliz()
-	print("Bliz")
 	if (YurysRuneDisplay:GetBliz()) then
-		print("on")
+		print("blizz on")
 		RuneFrame:Show()
 	else
-		print("off")
+		print("blizz off")
 		RuneFrame:Hide()
 	end
 end
@@ -532,5 +532,3 @@ function YurysRuneDisplay:SetUnlock()
 	-- apply settings to the frame --
 	YurysRuneDisplay:ApplyUnlock()
 end
-
-oldShow = RuneFrame.Show; RuneFrame.Show = function() print('showing my frame'); oldShow() end

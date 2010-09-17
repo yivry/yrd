@@ -62,12 +62,12 @@ function YurysRuneDisplay:OnEnable()
 	YurysRuneDisplay:RegisterEvent("PLAYER_REGEN_DISABLED")
 	YurysRuneDisplay:RegisterEvent("RUNE_POWER_UPDATE")
 	YurysRuneDisplay:RegisterEvent("RUNE_TYPE_UPDATE")
-	-- Apply settings that might have been disabled --
-	YurysRuneDisplay:ApplyBliz()
 	-- Turn on our frame, if needed --
 	if (YurysRuneDisplay:GetOoca() > 0) then
 		YRDRuneFrame:Show()
 	end
+	-- Apply settings that might have been undone --
+	YurysRuneDisplay:ApplyBliz()
 	print(L["Yury's RuneDisplay enabled. For options: /"]..L["yrd"])
 end
 
@@ -154,9 +154,12 @@ function YurysRuneDisplay:ApplyArc()
 end
 
 function YurysRuneDisplay:ApplyBliz()
+	print("Bliz")
 	if (YurysRuneDisplay:GetBliz()) then
+		print("on")
 		RuneFrame:Show()
 	else
+		print("off")
 		RuneFrame:Hide()
 	end
 end

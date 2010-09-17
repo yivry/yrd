@@ -18,8 +18,6 @@ end
 
 function YRDRuneButton_OnUpdate(self, elapsed)
 	local start, duration, runeReady = GetRuneCooldown(self:GetID())
-	local displayCooldown = (runeReady and 0) or 1;
-	CooldownFrame_SetTimer(self.cooldown, start, duration, displayCooldown);
 	if (YurysRuneDisplay:GetNumcd()) then
 		local apply, time = YurysRuneDisplay:GetCooldownUpdate(self)
 		if (apply) then

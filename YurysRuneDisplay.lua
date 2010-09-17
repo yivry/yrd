@@ -121,6 +121,7 @@ function YurysRuneDisplay:RUNE_POWER_UPDATE(event, runeIndex)
 	if not runeReady  then
 		if start then
 			CooldownFrame_SetTimer(runeButton.cooldown, start, duration, 1);
+			runeButton:SetScript("OnUpdate", YRDRuneButton_OnUpdate);
 		end
 	else
 		runeButton.cooldown:Hide();
@@ -162,7 +163,7 @@ end
 
 function YurysRuneDisplay:ApplyCooldown(rune, time)
 	rune.lastUpdate = GetTime()
-	time = floor(time + 0.5) -- +0.5 makes floor behave like round
+	time = floor(time + 0.5) -- +0.5 makes floor behave like round --
 	local color = {1,1,0}
 	if (time == 0) then
 		time = ""
@@ -267,7 +268,7 @@ end
 function YurysRuneDisplay:GetCooldownUpdate(rune)
 	local start, duration, ready = GetRuneCooldown(rune:GetID())
 	local now = GetTime()
-	local FREQ = 0.25
+	local FREQ = 0.20
 	if (ready or (now - start) >= duration) then
 		return true, 0
 	elseif (now >= rune.lastUpdate + FREQ) then

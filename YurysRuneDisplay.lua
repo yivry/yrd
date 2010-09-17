@@ -5,6 +5,11 @@ YurysRuneDisplay = LibStub("AceAddon-3.0"):NewAddon("YurysRuneDisplay", "AceEven
 
 -- RuneFrame variables --
 local MAX_RUNES = 6;
+local RUNETYPE_BLOOD  = 1;
+local RUNETYPE_UNHOLY = 2;
+local RUNETYPE_FROST  = 3;
+local RUNETYPE_DEATH  = 4;
+
 local runeMapping = {
 	[1] = "BLOOD",
 	[2] = "UNHOLY",

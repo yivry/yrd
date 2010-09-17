@@ -102,7 +102,7 @@
 		</Scripts>
 	</Frame>
 
-	<Button name="YRDRuneButtonIndividual1" inherits="YRDRuneButtonIndividualTemplate" parent="YRDRuneFrame">
+	<Button name="YRDRuneButtonIndividual1" inherits="YRDRuneButtonIndividualTemplate" parent="YRDRuneFrame" id="1">
 		<Anchors>
 			<Anchor point="LEFT" relativeTo="YRDRuneFrame" relativePoint="LEFT">
 				<Offset>
@@ -112,7 +112,7 @@
 		</Anchors>
 	</Button>
 
-	<Button name="YRDRuneButtonIndividual2" inherits="YRDRuneButtonIndividualTemplate" parent="YRDRuneFrame">
+	<Button name="YRDRuneButtonIndividual2" inherits="YRDRuneButtonIndividualTemplate" parent="YRDRuneFrame" id="2">
 		<Anchors>
 			<Anchor point="LEFT" relativeTo="YRDRuneButtonIndividual1" relativePoint="RIGHT">
 				<Offset>
@@ -122,7 +122,7 @@
 		</Anchors>
 	</Button>
 
-	<Button name="YRDRuneButtonIndividual5" inherits="YRDRuneButtonIndividualTemplate" parent="YRDRuneFrame">
+	<Button name="YRDRuneButtonIndividual5" inherits="YRDRuneButtonIndividualTemplate" parent="YRDRuneFrame" id="5">
 		<Anchors>
 			<Anchor point="LEFT" relativeTo="YRDRuneButtonIndividual2" relativePoint="RIGHT">
 				<Offset>
@@ -132,7 +132,7 @@
 		</Anchors>
 	</Button>
 
-	<Button name="YRDRuneButtonIndividual6" inherits="YRDRuneButtonIndividualTemplate" parent="YRDRuneFrame">
+	<Button name="YRDRuneButtonIndividual6" inherits="YRDRuneButtonIndividualTemplate" parent="YRDRuneFrame" id="6">
 		<Anchors>
 			<Anchor point="LEFT" relativeTo="YRDRuneButtonIndividual5" relativePoint="RIGHT">
 				<Offset>
@@ -142,7 +142,7 @@
 		</Anchors>
 	</Button>
 
-	<Button name="YRDRuneButtonIndividual3" inherits="YRDRuneButtonIndividualTemplate" parent="YRDRuneFrame">
+	<Button name="YRDRuneButtonIndividual3" inherits="YRDRuneButtonIndividualTemplate" parent="YRDRuneFrame" id="3">
 		<Anchors>
 			<Anchor point="LEFT" relativeTo="YRDRuneButtonIndividual6" relativePoint="RIGHT">
 				<Offset>
@@ -152,7 +152,7 @@
 		</Anchors>
 	</Button>
 
-	<Button name="YRDRuneButtonIndividual4" inherits="YRDRuneButtonIndividualTemplate" parent="YRDRuneFrame">
+	<Button name="YRDRuneButtonIndividual4" inherits="YRDRuneButtonIndividualTemplate" parent="YRDRuneFrame" id="4">
 		<Anchors>
 			<Anchor point="LEFT" relativeTo="YRDRuneButtonIndividual3" relativePoint="RIGHT">
 				<Offset>

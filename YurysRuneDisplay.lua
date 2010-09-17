@@ -56,7 +56,6 @@ function YurysRuneDisplay:OnDragStop()
 end
 
 function YurysRuneDisplay:OnEnable()
-	RuneFrame:HookScript("OnShow", function () print("showing...") end)
 	-- Register events --
 	YurysRuneDisplay:RegisterEvent("PLAYER_ENTERING_WORLD")
 	YurysRuneDisplay:RegisterEvent("PLAYER_REGEN_ENABLED")
@@ -156,10 +155,10 @@ end
 
 function YurysRuneDisplay:ApplyBliz()
 	if (YurysRuneDisplay:GetBliz()) then
-		print("blizz on")
+		RuneFrame:SetScript("OnShow", nil)
 		RuneFrame:Show()
 	else
-		print("blizz off")
+		RuneFrame:SetScript("OnShow", RuneFrame.Hide)
 		RuneFrame:Hide()
 	end
 end

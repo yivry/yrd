@@ -4,8 +4,7 @@ function YRDRuneButton_OnLoad(self)
 		self:Hide()
 		return
 	end
-	-- add the rune to the frame --
-	RuneFrame_AddRune(YRDRuneFrame, self)
+
 	-- define some extra settings --
 	local name = self:GetName()
 	self.lastUpdate = 0
@@ -15,8 +14,6 @@ function YRDRuneButton_OnLoad(self)
 	self.text  = getglobal(name.."CooldownText")
 	self.cooldown = getglobal(name.."Cooldown")
 	self.cooldown.noCooldownCount = true	-- disable OmniCC numbers --
-	-- update --
-	RuneButton_Update(self)
 end
 
 function YRDRuneButton_OnUpdate(self, elapsed)

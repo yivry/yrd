@@ -271,7 +271,7 @@ end
 function YurysRuneDisplay:GetCooldownUpdate(rune)
 	local start, duration, ready = GetRuneCooldown(rune:GetID())
 	local now = GetTime()
-	local FREQ = 0.20
+	local FREQ = 0.25
 	if (ready or (now - start) >= duration) then
 		return true, 0
 	elseif (now >= rune.lastUpdate + FREQ) then

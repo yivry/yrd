@@ -165,6 +165,8 @@ function YurysRuneDisplay:ApplyCooldown(rune, time)
 	rune.lastUpdate = GetTime()
 	time = floor(time + 0.5) -- +0.5 makes floor behave like round --
 	local color = {1,1,0}
+	local n,h,f = rune.text:GetFont()
+	h = (time > 9) and 12 or 18
 	if (time == 0) then
 		time = ""
 	elseif (YurysRuneDisplay:GetCdclr() == "rune") then
@@ -173,8 +175,6 @@ function YurysRuneDisplay:ApplyCooldown(rune, time)
 		local _,g,_ = rune.text:GetTextColor()
 		if (g > 0.5) then color = {1,0,0} end
 	end
-	local n,h,f = rune.text:GetFont()
-	h = (time > 9) and 14 or 18
 	rune.text:SetFont(n,h,f)
 	rune.text:SetTextColor(unpack(color))
 	rune.text:SetText(time)	

@@ -16,6 +16,7 @@
 				<Layers>
 					<Layer level="OVERLAY">
 						<FontString name="$parentText" font="Fonts\FRIZQT__.TTF" text="" justifyH="CENTER" justifyV="MIDDLE" outline="THICK">
+							<Size x="18" y="18" />
 							<Color r="1" g="1" b="0" a="1" />
 							<FontHeight>
 								<AbsValue val="18" />

@@ -173,6 +173,9 @@ function YurysRuneDisplay:ApplyCooldown(rune, time)
 		local _,g,_ = rune.text:GetTextColor()
 		if (g > 0.5) then color = {1,0,0} end
 	end
+	local n,h,f = rune.text:GetFont()
+	h = (time > 9) and 14 or 18
+	rune.text:SetFont(n,h,f)
 	rune.text:SetTextColor(unpack(color))
 	rune.text:SetText(time)	
 end

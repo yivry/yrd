@@ -8,11 +8,9 @@ function YRDRuneButton_OnLoad(self)
 	-- define some extra settings --
 	local name = self:GetName()
 	self.lastUpdate = 0
-	self.rune  = getglobal(name.."Rune")
-	self.fill  = getglobal(name.."Fill");
-	self.shine = getglobal(name.."ShineTexture")
-	self.text  = getglobal(name.."CooldownText")
-	self.cooldown = getglobal(name.."Cooldown")
+	self.shine = _G[name.."ShineTexture"]
+	self.text  = _G[name.."CooldownText"]
+	self.cooldown = _G[name.."Cooldown"]
 	self.cooldown.noCooldownCount = true	-- disable OmniCC numbers --
 end
 

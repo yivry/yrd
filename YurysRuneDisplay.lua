@@ -4,11 +4,11 @@ if ( select(2, UnitClass("player")) ~= "DEATHKNIGHT" ) then return end
 YurysRuneDisplay = LibStub("AceAddon-3.0"):NewAddon("YurysRuneDisplay", "AceEvent-3.0")
 
 -- RuneFrame variables --
-local MAX_RUNES = 6;
-local RUNETYPE_BLOOD  = 1;
-local RUNETYPE_UNHOLY = 2;
-local RUNETYPE_FROST  = 3;
-local RUNETYPE_DEATH  = 4;
+local MAX_RUNES = 6
+local RUNETYPE_BLOOD  = 1
+local RUNETYPE_UNHOLY = 2
+local RUNETYPE_FROST  = 3
+local RUNETYPE_DEATH  = 4
 
 local runeMapping = {
 	[1] = "BLOOD",
@@ -96,9 +96,9 @@ end
 -- Event Handlers --
 function YurysRuneDisplay:PLAYER_ENTERING_WORLD()
 	for i=1,MAX_RUNES do
-		local runeButton = _G["YRDRuneButtonIndividual"..i];
+		local runeButton = _G["YRDRuneButtonIndividual"..i]
 		if runeButton then
-			RuneButton_Update(runeButton, i, true);
+			RuneButton_Update(runeButton, i, true)
 		end
 	end
 end
@@ -115,24 +115,24 @@ function YurysRuneDisplay:PLAYER_REGEN_DISABLED()
 end
 
 function YurysRuneDisplay:RUNE_POWER_UPDATE(event, runeIndex)
-	local runeButton = _G["YRDRuneButtonIndividual"..runeIndex];
+	local runeButton = _G["YRDRuneButtonIndividual"..runeIndex]
 
-	local start, duration, runeReady = GetRuneCooldown(runeIndex);
+	local start, duration, runeReady = GetRuneCooldown(runeIndex)
 	if not runeReady  then
 		if start then
-			CooldownFrame_SetTimer(runeButton.cooldown, start, duration, 1);
-			runeButton:SetScript("OnUpdate", YRDRuneButton_OnUpdate);
+			CooldownFrame_SetTimer(runeButton.cooldown, start, duration, 1)
+			runeButton:SetScript("OnUpdate", YRDRuneButton_OnUpdate)
 		end
 	else
-		runeButton.cooldown:Hide();
-		runeButton.shine:SetVertexColor(1, 1, 1);
+		runeButton.cooldown:Hide()
+		runeButton.shine:SetVertexColor(1, 1, 1)
 		RuneButton_ShineFadeIn(runeButton.shine)
 	end
 end
 
 function YurysRuneDisplay:RUNE_TYPE_UPDATE(event, runeIndex)
 	if ( runeIndex and runeIndex >= 1 and runeIndex <= MAX_RUNES ) then
-			RuneButton_Update(_G["YRDRuneButtonIndividual"..runeIndex], runeIndex);
+			RuneButton_Update(_G["YRDRuneButtonIndividual"..runeIndex], runeIndex)
 		end
 end
 
@@ -147,7 +147,7 @@ function YurysRuneDisplay:ApplyArc()
 	}
 	arcs = arcs[YurysRuneDisplay:GetArc()]
 	for i = 1, 6 do
-		local Rune = getglobal("YRDRuneButtonIndividual"..i)
+		local Rune = _G["YRDRuneButtonIndividual"..i]
 		local p,f,r,_,_ = Rune:GetPoint()
 		Rune:SetPoint(p,f,r,arcs[i][1],arcs[i][2])
 	end
@@ -185,7 +185,7 @@ function YurysRuneDisplay:ApplyLock()
 		YurysRuneDisplay:ApplyUnlock()
 	else
 		for i = 1, 6 do
-			local Rune = getglobal("YRDRuneButtonIndividual"..i)
+			local Rune = _G["YRDRuneButtonIndividual"..i]
 			-- Registering nothing effectively disables dragging --
 			Rune:RegisterForDrag()
 			Rune:EnableMouse(false)
@@ -230,7 +230,7 @@ function YurysRuneDisplay:ApplyUnlock()
 		YurysRuneDisplay:ApplyLock()
 	else
 		for i = 1, 6 do
-			local Rune = getglobal("YRDRuneButtonIndividual"..i)
+			local Rune = _G["YRDRuneButtonIndividual"..i]
 			Rune:EnableMouse(true)
 			Rune:RegisterForDrag("LeftButton")
 			Rune:SetScript("OnDragStart", YurysRuneDisplay.OnDragStart)

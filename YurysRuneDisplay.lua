@@ -160,14 +160,11 @@ function YurysRuneDisplay:ApplyCooldown(rune, timeLeft)
 	rune.lastUpdate = GetTime()
 
 	-- determine time left in seconds --
-	-- test if this "feels" better than 'round' --
 	timeLeft = (timeLeft >= 0.1) and ceil(timeLeft) or 0
-	-- end test --
-	--timeLeft = floor(timeLeft + 0.5) -- +0.5 makes floor behave like round --
 
 	-- determine fontsize --
 	local n,h,f = rune.text:GetFont()
-	h = (timeLeft > 9) and 12 or 16
+	h = (timeLeft > 9) and 12 or 17
 	rune.text:SetFont(n,h,f)
 
 	-- determine color --

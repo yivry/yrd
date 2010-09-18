@@ -41,6 +41,7 @@ function YurysRuneDisplay:OnDisable()
 	-- Hide our runeframe --
 	YRDRuneFrame:Hide()
 	-- Turn on Blizzard's runeframe --
+	RuneFrame:SetScript("OnShow", nil)
 	RuneFrame:Show() 
 end
 
@@ -72,17 +73,12 @@ function YurysRuneDisplay:OnEnable()
 end
 
 function YurysRuneDisplay:OnFrameFade()
-	local ready = true
 	for i=1,MAX_RUNES do
 		_, _, isReady = GetRuneCooldown(i)
-		if (not isReady) then
-			ready = false
-			break
-		end
+		if (not isReady) then return end
 	end
-	if (ready) then
-		YurysRuneDisplay:ApplyOoca()
-	end
+	YRDRuneFrame:SetScript("OnUpdate", nil)
+	YurysRuneDisplay:ApplyOoca()
 end
 
 function YurysRuneDisplay:OnInitialize()
@@ -96,10 +92,7 @@ end
 -- Event Handlers --
 function YurysRuneDisplay:PLAYER_ENTERING_WORLD()
 	for i=1,MAX_RUNES do
-		local runeButton = _G["YRDRuneButtonIndividual"..i]
-		if runeButton then
-			RuneButton_Update(runeButton, i, true)
-		end
+		RuneButton_Update(_G["YRDRuneButtonIndividual"..i], i, true)
 	end
 end
 
@@ -116,7 +109,6 @@ end
 
 function YurysRuneDisplay:RUNE_POWER_UPDATE(event, runeIndex)
 	local runeButton = _G["YRDRuneButtonIndividual"..runeIndex]
-
 	local start, duration, runeReady = GetRuneCooldown(runeIndex)
 	if not runeReady  then
 		if start then
@@ -132,8 +124,8 @@ end
 
 function YurysRuneDisplay:RUNE_TYPE_UPDATE(event, runeIndex)
 	if ( runeIndex and runeIndex >= 1 and runeIndex <= MAX_RUNES ) then
-			RuneButton_Update(_G["YRDRuneButtonIndividual"..runeIndex], runeIndex)
-		end
+		RuneButton_Update(_G["YRDRuneButtonIndividual"..runeIndex], runeIndex)
+	end
 end
 
 -- Applyers --
@@ -146,7 +138,7 @@ function YurysRuneDisplay:ApplyArc()
 		block =	   {{0, 0}, {-18, -21}, {3,  21}, {-18, -21}, {3, 21}, {-18, -21}}
 	}
 	arcs = arcs[YurysRuneDisplay:GetArc()]
-	for i = 1, 6 do
+	for i = 1, MAX_RUNES do
 		local Rune = _G["YRDRuneButtonIndividual"..i]
 		local p,f,r,_,_ = Rune:GetPoint()
 		Rune:SetPoint(p,f,r,arcs[i][1],arcs[i][2])
@@ -163,30 +155,42 @@ function YurysRuneDisplay:ApplyBliz()
 	end
 end
 
-function YurysRuneDisplay:ApplyCooldown(rune, time)
+function YurysRuneDisplay:ApplyCooldown(rune, timeLeft)
+	-- set time of last update to now --
 	rune.lastUpdate = GetTime()
-	time = floor(time + 0.5) -- +0.5 makes floor behave like round --
-	local color = {1,1,0}
+
+	-- determine time left in seconds --
+	-- test if this "feels" better than 'round' --
+	timeLeft = (timeLeft >= 0.1) and ceil(timeLeft) or 0
+	-- end test --
+	--timeLeft = floor(timeLeft + 0.5) -- +0.5 makes floor behave like round --
+
+	-- determine fontsize --
 	local n,h,f = rune.text:GetFont()
-	h = (time > 9) and 12 or 18
-	if (time == 0) then
-		time = ""
+	h = (timeLeft > 9) and 12 or 16
+	rune.text:SetFont(n,h,f)
+
+	-- determine color --
+	local color = {1,1,0}
+	if (timeLeft == 0) then
+		timeLeft = ""
 	elseif (YurysRuneDisplay:GetCdclr() == "rune") then
 		color = runeColors[GetRuneType(rune:GetID())]
-	elseif (time < 3) then
+	elseif (timeLeft < 3) then
 		local _,g,_ = rune.text:GetTextColor()
 		if (g > 0.5) then color = {1,0,0} end
 	end
-	rune.text:SetFont(n,h,f)
 	rune.text:SetTextColor(unpack(color))
-	rune.text:SetText(time)	
+
+	-- set the time left --
+	rune.text:SetText(timeLeft)	
 end
 
 function YurysRuneDisplay:ApplyLock()
 	if (YurysRuneDisplay:GetUnlock()) then
 		YurysRuneDisplay:ApplyUnlock()
 	else
-		for i = 1, 6 do
+		for i = 1, MAX_RUNES do
 			local Rune = _G["YRDRuneButtonIndividual"..i]
 			-- Registering nothing effectively disables dragging --
 			Rune:RegisterForDrag()
@@ -228,16 +232,12 @@ function YurysRuneDisplay:ApplySettings()
 end
 
 function YurysRuneDisplay:ApplyUnlock()
-	if (YurysRuneDisplay:GetLock()) then
-		YurysRuneDisplay:ApplyLock()
-	else
-		for i = 1, 6 do
-			local Rune = _G["YRDRuneButtonIndividual"..i]
-			Rune:EnableMouse(true)
-			Rune:RegisterForDrag("LeftButton")
-			Rune:SetScript("OnDragStart", YurysRuneDisplay.OnDragStart)
-			Rune:SetScript("OnDragStop", YurysRuneDisplay.OnDragStop)
-		end
+	for i = 1, MAX_RUNES do
+		local Rune = _G["YRDRuneButtonIndividual"..i]
+		Rune:EnableMouse(true)
+		Rune:RegisterForDrag("LeftButton")
+		Rune:SetScript("OnDragStart", YurysRuneDisplay.OnDragStart)
+		Rune:SetScript("OnDragStop", YurysRuneDisplay.OnDragStop)
 	end
 end
 

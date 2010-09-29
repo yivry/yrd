@@ -34,6 +34,12 @@ local runeTextures = {
 	[RUNETYPE_FROST]  = "Interface\\PlayerFrame\\UI-PlayerFrame-DeathKnight-Frost-Off.tga",
 	[RUNETYPE_DEATH]  = "Interface\\PlayerFrame\\UI-PlayerFrame-Deathknight-Chromatic-Off.tga"
 }
+local runeEnergizeTextures = {
+	[RUNETYPE_BLOOD] = "Interface\\PlayerFrame\\Deathknight-Energize-Blood",
+	[RUNETYPE_UNHOLY] = "Interface\\PlayerFrame\\Deathknight-Energize-Unholy",
+	[RUNETYPE_FROST] = "Interface\\PlayerFrame\\Deathknight-Energize-Frost",
+	[RUNETYPE_DEATH] = "Interface\\PlayerFrame\\Deathknight-Energize-White",
+}
 
 -- General Handlers --
 function YurysRuneDisplay:OnDisable()
@@ -107,7 +113,7 @@ function YurysRuneDisplay:PLAYER_REGEN_DISABLED()
 	YRDRuneFrame:Show()
 end
 
-function YurysRuneDisplay:RUNE_POWER_UPDATE(event, runeIndex)
+function YurysRuneDisplay:RUNE_POWER_UPDATE(event, runeIndex, isEnergize)
 	local runeButton = _G["YRDRuneButtonIndividual"..runeIndex]
 	local start, duration, runeReady = GetRuneCooldown(runeIndex)
 	if not runeReady  then
@@ -115,10 +121,14 @@ function YurysRuneDisplay:RUNE_POWER_UPDATE(event, runeIndex)
 			CooldownFrame_SetTimer(runeButton.cooldown, start, duration, 1)
 			runeButton:SetScript("OnUpdate", YRDRuneButton_OnUpdate)
 		end
+		runeButton.energize:Stop();
 	else
 		runeButton.cooldown:Hide()
 		runeButton.shine:SetVertexColor(1, 1, 1)
 		RuneButton_ShineFadeIn(runeButton.shine)
+	end
+	if isEnergize  then
+		runeButton.energize:Play();
 	end
 end
 

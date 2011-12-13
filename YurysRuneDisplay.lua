@@ -10,12 +10,6 @@ local RUNETYPE_UNHOLY = 2
 local RUNETYPE_FROST  = 3
 local RUNETYPE_DEATH  = 4
 
-local runeMapping = {
-	[1] = "BLOOD",
-	[2] = "UNHOLY",
-	[3] = "FROST",
-	[4] = "DEATH",
-}
 local iconTextures = {
 	[RUNETYPE_BLOOD]  = "Interface\\PlayerFrame\\UI-PlayerFrame-Deathknight-Blood",
 	[RUNETYPE_UNHOLY] = "Interface\\PlayerFrame\\UI-PlayerFrame-Deathknight-Unholy",
@@ -60,6 +54,8 @@ function YurysRuneDisplay:OnDragStop()
 	local pos = {}
 	pos["POINT"], _, pos["RELATIVE"], pos["XCOORD"], pos["YCOORD"] = YRDRuneFrame:GetPoint()
 	YurysRuneDisplay:SetPosition(pos)
+	--local p, _, r, x, y = YRDRuneFrame:getPoint()
+	--YurysRuneDisplay:SetPosition({POINT = p, RELATIVE = r, XCOORD = x, YCOORD = y})
 end
 
 function YurysRuneDisplay:OnEnable()
@@ -151,7 +147,8 @@ function YurysRuneDisplay:ApplyArc()
 	for i = 1, MAX_RUNES do
 		local Rune = _G["YRDRuneButtonIndividual"..i]
 		local p,f,r,_,_ = Rune:GetPoint()
-		Rune:SetPoint(p,f,r,arcs[i][1],arcs[i][2])
+		local coord = arcs[i]
+		Rune:SetPoint(p,f,r,coord[1],coord[2])
 	end
 end
 
@@ -250,7 +247,7 @@ end
 
 -- Getters --
 function YurysRuneDisplay:GetAbout()
-	local about = string.format(
+	return string.format(
 		"|cFFFFD000%s:|r %s\n"..
 		"|cFFFFD000%s:|r %s\n\n"..
 		"|cFFFFD000%s:|r\n%s",
@@ -258,7 +255,6 @@ function YurysRuneDisplay:GetAbout()
 		L["Version"], GetAddOnMetadata("YurysRuneDisplay","Version"),
 		L["Notes"], L["Very simple and lightweight addon for display of a Death Knight's runes (because the default frame is uncontrollable)"]
 	)
-	return about
 end
 
 function YurysRuneDisplay:GetArc()
@@ -290,7 +286,7 @@ function YurysRuneDisplay:GetCooldownUpdate(rune)
 end
 
 function YurysRuneDisplay:GetDefaults()
-	local defaultValues = {
+	return {
 		char = {
 			ARC = "happy",
 			BLIZ = false,
@@ -307,7 +303,6 @@ function YurysRuneDisplay:GetDefaults()
 			SCALE = 1
 		}
 	}
-	return defaultValues
 end
 
 function YurysRuneDisplay:GetLock()
@@ -323,7 +318,7 @@ function YurysRuneDisplay:GetOoca()
 end
 
 function YurysRuneDisplay:GetOptionsTable()
-	local optionsTable = {
+	return {
 		name = L["Yury's RuneDisplay"],
 		handler = YurysRuneDisplay,
 		type = "group",
@@ -452,7 +447,6 @@ function YurysRuneDisplay:GetOptionsTable()
 			}
 		}
 	}
-	return optionsTable
 end
 
 function YurysRuneDisplay:GetPosition()

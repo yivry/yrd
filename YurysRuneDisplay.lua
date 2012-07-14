@@ -353,7 +353,7 @@ function YurysRuneDisplay:GetOptionsTable()
 				type = "toggle",
 				set = "SetNumcd",
 				get = "GetNumcd",
-				order = 4
+				order = 2
 			},
 			cdclr = {
 				name = L["Cooldown color"],
@@ -365,7 +365,7 @@ function YurysRuneDisplay:GetOptionsTable()
 				},
 				set = "SetCdclr",
 				get = "GetCdclr",
-				order = 5,
+				order = 3,
 				disabled = function() return not YurysRuneDisplay:GetNumcd() end
 			},
 			scale = {
@@ -396,7 +396,8 @@ function YurysRuneDisplay:GetOptionsTable()
 				type = "toggle",
 				get = "GetBliz",
 				set = "SetBliz",
-				order = 2
+				width = "double",
+				order = 5
 			},
 			arc = {
 				name = L["Arc"],
@@ -410,7 +411,7 @@ function YurysRuneDisplay:GetOptionsTable()
 				},
 				get = "GetArc",
 				set = "SetArc",
-				order = 3
+				order = 4
 			},
 			reset = {
 				name = L["Reset"],

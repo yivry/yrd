@@ -329,7 +329,6 @@ function YurysRuneDisplay:GetOptionsTable()
 				type = "toggle",
 				set = "SetGuiLock",
 				get = "GetLock",
-				width = "full",
 				order = 1,
 				cmdHidden = true
 			},

@@ -1,4 +1,4 @@
-## Interface: 50100
+## Interface: 50200
 ## Title: Yury's RuneDisplay
 ## Notes: Very simple and lightweight addon for display of a Death Knight's runes (because the default frame is uncontrollable)
 ## Author: Yury, Turalyon-EU (Alt of Yivry, Turalyon-EU)

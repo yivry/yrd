@@ -1,17 +1,22 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
 	<Button name="YRDRuneButtonIndividualTemplate" virtual="true" hidden="false">
+		<Animations>
+			<AnimationGroup parentKey="energize">
+				<Scale target="$parentRuneWhiteGlow" endDelay="1" duration="0.15"  scaleX="4" scaleY="4" order="1"/>
+				<Alpha target="$parentRuneWhiteGlow" endDelay="1" change="1.0" duration="0.2" order="1" />
+				<Alpha target="$parentRuneColorGlow" startDelay="0.3" endDelay="4" change="1.0" duration="0.1" order="1" smoothing="IN_OUT"/>
+				<Alpha target="$parentRuneWhiteGlow" change="-1.0" duration="0.1" order="2" smoothing="IN_OUT"/>
+				<Alpha target="$parentRuneColorGlow" change="-1.0" duration="0.1" order="2" smoothing="IN_OUT"/>
+			</AnimationGroup>
+		</Animations>
 		<Size>
 			<AbsDimension x="18" y="18" />
 		</Size>
 		<Frames>
-			<Cooldown name="$parentCooldown" drawEdge="true" frameStrata="LOW">
-				<Size x="15" y="15" />
+			<Cooldown name="$parentCooldown" drawEdge="true" frameStrata="LOW" inherits="CooldownFrameTemplate">
+				<Size x="12" y="12" />
 				<Anchors>
-					<Anchor point="CENTER">
-						<Offset>
-							<AbsDimension x="0" y="-1" />
-						</Offset>
-					</Anchor>
+					<Anchor point="CENTER" x="0" y="-1" />
 				</Anchors>
 				<Layers>
 					<Layer level="OVERLAY">
@@ -66,7 +71,7 @@
 			</Frame>
 			<Frame frameStrata="HIGH" setAllPoints="true">
 				<Layers>
-					<Layer level="OVERLAY" textureSublevel = "-1">
+                    <Layer level="OVERLAY" textureSubLevel = "-1">
 						<Texture name="$parentRuneWhiteGlow" file="Interface\PlayerFrame\Deathknight-Energize-White" alpha="0">
 							<Size x="8" y="8"/>
 							<Anchors>
@@ -101,21 +106,12 @@
 				</Texture>
 			</Layer>
 		</Layers>
-		<Animations>
-			<AnimationGroup parentKey="energize">
-				<Scale target="$parentRuneWhiteGlow" endDelay="1" duration="0.15"  scaleX="4" scaleY="4" order="1"/>
-				<Alpha target="$parentRuneWhiteGlow" endDelay="1" change="1.0" duration="0.2" order="1" />
-				<Alpha target="$parentRuneColorGlow" startDelay="0.3" endDelay="4" change="1.0" duration="0.1" order="1" smoothing="IN_OUT"/>
-				<Alpha target="$parentRuneWhiteGlow" change="-1.0" duration="0.1" order="2" smoothing="IN_OUT"/>
-				<Alpha target="$parentRuneColorGlow" change="-1.0" duration="0.1" order="2" smoothing="IN_OUT"/>
-			</AnimationGroup>
-		</Animations>
 		<Scripts>
 			<OnLoad>YRDRuneButton_OnLoad(self);</OnLoad>
 		</Scripts>
 	</Button>
 
-	<Frame name="YRDRuneFrame" parent="UIParent" frameStrata="LOW" toplevel="true" hidden="false">
+	<Frame name="YRDRuneFrame" parent="UIParent" frameStrata="LOW" toplevel="true" hidden="false" movable="true">
 		<Size>
 			<AbsDimension x="130" y="18" />
 		</Size>

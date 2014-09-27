@@ -217,7 +217,6 @@ end
 
 function YurysRuneDisplay:ApplyPosition()
 	local pos = YurysRuneDisplay:GetPosition()
-	YRDRuneFrame:SetMovable()
 	YRDRuneFrame:ClearAllPoints()
 	YRDRuneFrame:SetPoint(pos["POINT"], "UIParent", pos["RELATIVE"], pos["XCOORD"], pos["YCOORD"])
 end
